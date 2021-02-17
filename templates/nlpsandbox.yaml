@@ -30,7 +30,7 @@ Parameters:
     Type: Number
     MinValue: 1
     MaxValue: 65535
-    Default: 443
+    Default: 80
     ConstraintDescription: A port number in the range 1 to 65535
   Subnets:
     Description: List of subnets for the ELB
@@ -198,7 +198,7 @@ Resources:
       # VpcId: !Ref VpcId
       VpcId: !ImportValue 'us-east-1-sandcastlevpc-VPCId'
       Port: !Ref AppPort
-      Protocol: HTTPS
+      Protocol: HTTP
       Tags:
         - Key: "Name"
           Value: !Join
@@ -297,7 +297,7 @@ Resources:
               cd /home/ubuntu/
               git clone https://github.com/nlpsandbox/data-node.git
               cd data-node
-              cp .env.example .env
+              sed 's/SERVER_PORT=8080/SERVER_PORT=80/' .env.example > .env
               docker-compose up -d --build
 
   PhiDeidentifier:
