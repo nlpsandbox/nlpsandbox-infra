@@ -73,6 +73,8 @@ Resources:
       Tags:
         # - Key: !Ref TagKey
         #   Value: !Ref TagValue
+        - Key: Name
+          Value: "nlpsandbox-ELK (aws-cf)"
         - Key: "Department"
           Value: !Ref Department
         - Key: "Project"
@@ -92,11 +94,26 @@ Resources:
           !Sub |
               #!/bin/bash -ex
               sudo apt-get update -y;
-              sudo apt-get install docker -y;
+              sudo apt-get install docker git -y;
               sudo service docker start;
               sudo usermod -a -G docker ec2-user;
-              sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose;
+              sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               sudo chmod +x /usr/local/bin/docker-compose;
+              cd ~
+              git clone https://github.com/nlpsandbox/docker-elk.git
+
+  # NlpSandboxSecurityGroup:
+  #   Type: AWS::EC2::SecurityGroup
+  #   Properties:
+  #     GroupName: "Nlp Sandbox Instances"
+  #     GroupDescription: "Allow for NLP sandbox instances to communicate with each other"
+  #     VpcId: !ImportValue 'us-east-1-sandcastlevpc-VPCId'
+  #     SecurityGroupIngress:
+  #       - IpProtocol: -1
+  #         FromPort: -1
+  #         ToPort: -1
+  #         CidrIp: !Sub ${Datanode.PrivateIp}/32
+
   Datanode:
     Type: 'AWS::EC2::Instance'
     Properties:
@@ -115,6 +132,8 @@ Resources:
       Tags:
         # - Key: !Ref TagKey
         #   Value: !Ref TagValue
+        - Key: Name
+          Value: "nlpsandbox-datanode (aws-cf)"
         - Key: "Department"
           Value: !Ref Department
         - Key: "Project"
@@ -127,6 +146,7 @@ Resources:
         GroupSet:
         - !ImportValue 'us-east-1-sandcastlevpc-VpnSecurityGroup'
         - !GetAtt InstanceSecurityGroup.GroupId
+        # - !GetAtt NlpSandboxSecurityGroup.GroupId
         SubnetId: !ImportValue 'us-east-1-sandcastlevpc-PrivateSubnet'
       UserData:
         # install Docker and Docker-compose
@@ -134,11 +154,14 @@ Resources:
           !Sub |
               #!/bin/bash -ex
               sudo apt-get update -y;
-              sudo apt-get install docker -y;
+              sudo apt-get install docker git -y;
               sudo service docker start;
               sudo usermod -a -G docker ec2-user;
-              sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose;
+              sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               sudo chmod +x /usr/local/bin/docker-compose;
+              cd ~
+              git clone https://github.com/nlpsandbox/data-node.git
+
   PhiDeidentifier:
     Type: 'AWS::EC2::Instance'
     Properties:
@@ -157,6 +180,8 @@ Resources:
       Tags:
         # - Key: !Ref TagKey
         #   Value: !Ref TagValue
+        - Key: Name
+          Value: "nlpsandbox-phi-deidentifier (aws-cf)"
         - Key: "Department"
           Value: !Ref Department
         - Key: "Project"
@@ -179,8 +204,9 @@ Resources:
               sudo apt-get install docker -y;
               sudo service docker start;
               sudo usermod -a -G docker ec2-user;
-              sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose;
+              sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               sudo chmod +x /usr/local/bin/docker-compose;
+
   Infrastructure:
     Type: 'AWS::EC2::Instance'
     Properties:
@@ -199,6 +225,8 @@ Resources:
       Tags:
         # - Key: !Ref TagKey
         #   Value: !Ref TagValue
+        - Key: Name
+          Value: "nlpsandbox-infrastructure (aws-cf)"
         - Key: "Department"
           Value: !Ref Department
         - Key: "Project"
@@ -218,14 +246,29 @@ Resources:
           !Sub |
               #!/bin/bash -ex
               sudo apt-get update -y;
-              sudo apt-get install docker -y;
+              sudo apt-get install docker git -y;
               sudo service docker start;
               sudo usermod -a -G docker ec2-user;
-              sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose;
+              sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               sudo chmod +x /usr/local/bin/docker-compose;
+              cd ~
+              git clone https://github.com/nlpsandbox/nlpsandbox-client.git
+              git clone https://github.com/Sage-Bionetworks/SynapseWorkflowOrchestrator.git
+
 Outputs:
-  Ec2:
-    Value: !Ref Datanode
+  DataNodePrivateIp:
+    Value: !GetAtt Datanode.PrivateIp
     Export:
-      Name: !Sub '${AWS::Region}-${AWS::StackName}-Datanode'
- 
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-DataNodePrivateIp'
+  InfrastructurePrivateIp:
+    Value: !GetAtt Infrastructure.PrivateIp
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-InfrastructurePrivateIp'
+  PhiDeidentifierPrivateIp:
+    Value: !GetAtt PhiDeidentifier.PrivateIp
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-PhiDeidentifierPrivateIp'
+  ElkPrivateIp:
+    Value: !GetAtt Elk.PrivateIp
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-ElkPrivateIp'
