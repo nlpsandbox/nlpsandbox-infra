@@ -4,3 +4,8 @@ parameters:
   Department: "CompOnc"
   Project: "genie"
   OwnerEmail: "thomas.yu@sagebase.org"
+  SSLCertificateIdArn: "arn:aws:acm:us-east-1:563295687221:certificate/07df27d5-a1fc-45f2-b70a-61ebda338153"
+  #sandcastle vpc
+  VpcId: vpc-0e9b80dc470a797d5
+  #public subnets
+  Subnets: "subnet-02f2acd15e5be53cd,subnet-031359c53fce9b312,subnet-0f19d4c62f9ab0f2c"
