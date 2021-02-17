@@ -100,8 +100,8 @@ Resources:
               usermod -a -G docker ubuntu
               curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               chmod +x /usr/local/bin/docker-compose
-              cd /home/ubuntu/
               su ubuntu
+              cd /home/ubuntu/
               git clone https://github.com/nlpsandbox/docker-elk.git
 
   # NlpSandboxSecurityGroup:
@@ -162,11 +162,11 @@ Resources:
               usermod -a -G docker ubuntu
               curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               chmod +x /usr/local/bin/docker-compose
-              cd /home/ubuntu/
               su ubuntu
+              cd /home/ubuntu/
               git clone https://github.com/nlpsandbox/data-node.git
               cd data-node
-              cp .env.sample .env
+              cp .env.example .env
               docker-compose up -d --build
 
   PhiDeidentifier:
@@ -260,8 +260,8 @@ Resources:
               usermod -a -G docker ubuntu
               curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               chmod +x /usr/local/bin/docker-compose
-              cd /home/ubuntu/
               su ubuntu
+              cd /home/ubuntu
               git clone https://github.com/nlpsandbox/nlpsandbox-client.git
               git clone https://github.com/Sage-Bionetworks/SynapseWorkflowOrchestrator.git
 
