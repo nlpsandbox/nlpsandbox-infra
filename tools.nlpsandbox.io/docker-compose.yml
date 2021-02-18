@@ -1,0 +1,89 @@
+version: "3.8"
+
+services:
+  date-annotator:
+    image: nlpsandbox/date-annotator-example:1.0.0
+    container_name: date-annotator
+    restart: always
+    networks:
+      - nlp-sandbox-internal
+
+  # date-annotator-stub:
+  #   image: nlpsandbox/date-annotator-stub:1.0.0
+  #   container_name: date-annotator-stub
+  #   restart: always
+  #   networks:
+  #     - nlp-sandbox-internal
+
+  person-name-annotator:
+    image: nlpsandbox/person-name-annotator-example:1.0.0
+    container_name: person-name-annotator
+    restart: always
+    networks:
+      - nlp-sandbox-internal
+
+  physical-address-annotator:
+    image: nlpsandbox/physical-address-annotator-example:1.0.0
+    container_name: physical-address-annotator
+    restart: always
+    networks:
+      - nlp-sandbox-internal
+
+  phi-deidentifier:
+    image: nlpsandbox/phi-deidentifier:1.0.0
+    container_name: phi-deidentifier
+    restart: always
+    environment:
+      - DATE_ANNOTATOR_HOST=date-annotator
+      - DATE_ANNOTATOR_PORT=8080
+      - PERSON_NAME_ANNOTATOR_HOST=person-name-annotator
+      - PERSON_NAME_ANNOTATOR_PORT=8080
+      - PHYSICAL_ADDRESS_ANNOTATOR_HOST=physical-address-annotator
+      - PHYSICAL_ADDRESS_ANNOTATOR_PORT=8080
+    networks:
+      - nlp-sandbox-internal
+    depends_on:
+      - date-annotator
+      - person-name-annotator
+      - physical-address-annotator
+
+  phi-deidentifier-app:
+    image: nlpsandbox/phi-deidentifier-app:edge
+    container_name: phi-deidentifier-app
+    environment:
+      - SERVER_PROTOCOL=http://
+      - SERVER_HOST=localhost
+      - SERVER_PORT=80
+      - SERVER_API_PATH=/phi-deidentifier/api/v1
+    restart: always
+    networks:
+      - nlp-sandbox-internal
+    depends_on:
+      - phi-deidentifier
+
+  nginx:
+    image: nginx:1.19.6-alpine
+    restart: always
+    environment:
+      - PHI_DEIDENTIFIER_HOST=phi-deidentifier
+      - PHI_DEIDENTIFIER_PORT=8080
+      - PHI_DEIDENTIFIER_APP_HOST=phi-deidentifier-app
+      - PHI_DEIDENTIFIER_APP_PORT=80
+      - DATE_ANNOTATOR_STUB_HOST=date-annotator-stub
+      - DATE_ANNOTATOR_STUB_PORT=8080
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/templates:/etc/nginx/templates:ro
+    networks:
+      - nlp-sandbox
+      - nlp-sandbox-internal
+    ports:
+      - "80:80"
+    depends_on:
+      - phi-deidentifier-app
+      # - date-annotator-stub
+
+networks:
+  nlp-sandbox:
+  nlp-sandbox-internal:
+    internal: true
