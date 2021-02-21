@@ -81,7 +81,7 @@ Resources:
         - Key: "OwnerEmail"
           Value: !Ref OwnerEmail
 
-  Elk:
+  ElkInstance:
     Type: 'AWS::EC2::Instance'
     Properties:
       # ubuntu base image
@@ -140,7 +140,7 @@ Resources:
   #       - IpProtocol: -1
   #         FromPort: -1
   #         ToPort: -1
-  #         CidrIp: !Sub ${Datanode.PrivateIp}/32
+  #         CidrIp: !Sub ${DatanodeInstance.PrivateIp}/32
 
   Ec2SecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
@@ -193,7 +193,7 @@ Resources:
     Properties:
       TargetType: instance
       Targets:
-        - Id: !Ref Datanode
+        - Id: !Ref DatanodeInstance
           Port: !Ref AppPort
       # VpcId: !Ref VpcId
       VpcId: !ImportValue 'us-east-1-sandcastlevpc-VPCId'
@@ -203,7 +203,7 @@ Resources:
         - Key: "Name"
           Value: !Join
             - '-'
-            - - !Ref Datanode
+            - - !Ref DatanodeInstance
               - "ELB"
         - Key: "Department"
           Value: !Ref Department
@@ -225,7 +225,7 @@ Resources:
         - Key: "Name"
           Value: !Join
             - '-'
-            - - !Ref Datanode
+            - - !Ref DatanodeInstance
               - "ELB"
         - Key: "Department"
           Value: !Ref Department
@@ -247,7 +247,7 @@ Resources:
         - TargetGroupArn: !Ref ElbTargetGroup
           Type: forward
 
-  Datanode:
+  DatanodeInstance:
     Type: 'AWS::EC2::Instance'
     Properties:
       # ubuntu base image
@@ -397,10 +397,10 @@ Resources:
               git clone https://github.com/Sage-Bionetworks/SynapseWorkflowOrchestrator.git
 
 Outputs:
-  DataNodePrivateIp:
-    Value: !GetAtt Datanode.PrivateIp
+  DatanodeInstancePrivateIp:
+    Value: !GetAtt DatanodeInstance.PrivateIp
     Export:
-      Name: !Sub '${AWS::Region}-${AWS::StackName}-DataNodePrivateIp'
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-DatanodeInstancePrivateIp'
   InfrastructurePrivateIp:
     Value: !GetAtt Infrastructure.PrivateIp
     Export:
@@ -409,7 +409,7 @@ Outputs:
     Value: !GetAtt PhiDeidentifier.PrivateIp
     Export:
       Name: !Sub '${AWS::Region}-${AWS::StackName}-PhiDeidentifierPrivateIp'
-  ElkPrivateIp:
-    Value: !GetAtt Elk.PrivateIp
+  ElkInstancePrivateIp:
+    Value: !GetAtt ElkInstance.PrivateIp
     Export:
-      Name: !Sub '${AWS::Region}-${AWS::StackName}-ElkPrivateIp'
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-ElkInstancePrivateIp'
