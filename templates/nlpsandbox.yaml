@@ -313,7 +313,7 @@ Resources:
     Properties:
       # ubuntu base image
       ImageId: ami-0b7906ab614596e7e
-      InstanceType: t2.large
+      InstanceType: t2.nano
       Monitoring: True
       DisableApiTermination: False
       KeyName: !Ref KeyName
