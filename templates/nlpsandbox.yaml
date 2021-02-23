@@ -533,3 +533,7 @@ Outputs:
     Value: !GetAtt ElkInstance.PrivateIp
     Export:
       Name: !Sub '${AWS::Region}-${AWS::StackName}-ElkInstancePrivateIp'
+  DateAnnotatorExampleInstancePrivateIp:
+    Value: !GetAtt DateAnnotatorExampleInstance.PrivateIp
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-DateAnnotatorExampleInstancePrivateIp'
