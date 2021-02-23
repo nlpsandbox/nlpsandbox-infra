@@ -68,6 +68,10 @@ Resources:
           FromPort: 443
           ToPort: 443
           IpProtocol: tcp
+        - CidrIp: "0.0.0.0/0"
+          FromPort: 5000
+          ToPort: 5000
+          IpProtocol: udp
       SecurityGroupEgress:
         - CidrIp: "0.0.0.0/0"
           FromPort: -1
