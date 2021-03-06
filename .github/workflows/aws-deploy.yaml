@@ -43,7 +43,7 @@ jobs:
           # role-duration-seconds: 1200
       - name: Deploy with sceptre
         run: |
-          # cd sceptre/sandbox
+          cd sceptre/sandbox
           sceptre launch prod --yes
   # sceptre-scicomp:
   #   if: github.event_name == 'push'
