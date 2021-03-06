@@ -32,7 +32,10 @@ Parameters:
     MaxValue: 65535
     Default: 80
     ConstraintDescription: A port number in the range 1 to 65535
-  Subnets:
+  PublicSubnets:
+    Description: List of subnets for the ELB
+    Type: List<AWS::EC2::Subnet::Id>
+  PrivateSubnets:
     Description: List of subnets for the ELB
     Type: List<AWS::EC2::Subnet::Id>
   Scheme:
@@ -45,6 +48,9 @@ Parameters:
   SSLCertificateIdArn:
     Type: String
     Description: "SSL certificate Arn"
+  # VpcId:
+  #   Type: String
+  #   Description: "The VPC Id"
   SslPolicy:
     Type: String
     Default: ELBSecurityPolicy-TLS-1-2-Ext-2018-06
@@ -278,7 +284,7 @@ Resources:
       Scheme: !Ref Scheme
       SecurityGroups:
         - !GetAtt ElbSecurityGroup.GroupId
-      Subnets: !Ref Subnets
+      Subnets: !Ref PrivateSubnets
       Tags:
         - Key: "Name"
           Value: !Join
@@ -389,7 +395,7 @@ Resources:
       Scheme: !Ref Scheme
       SecurityGroups:
         - !GetAtt ElbSecurityGroup.GroupId
-      Subnets: !Ref Subnets
+      Subnets: !Ref PublicSubnets
       Tags:
         - Key: "Name"
           Value: !Join
@@ -500,7 +506,7 @@ Resources:
       Scheme: !Ref Scheme
       SecurityGroups:
         - !GetAtt ElbSecurityGroup.GroupId
-      Subnets: !Ref Subnets
+      Subnets: !Ref PublicSubnets
       Tags:
         - Key: "Name"
           Value: !Join
@@ -612,7 +618,7 @@ Resources:
       Scheme: !Ref Scheme
       SecurityGroups:
         - !GetAtt ElbSecurityGroup.GroupId
-      Subnets: !Ref Subnets
+      Subnets: !Ref PublicSubnets
       Tags:
         - Key: "Name"
           Value: !Join
