@@ -250,7 +250,7 @@ Resources:
           git clone https://github.com/nlpsandbox/data-node.git
           cd data-node
           sed 's/SERVER_PORT=8080/SERVER_PORT=80/' .env.example > .env
-          docker-compose up -d --build
+          docker-compose up -d --no-build
 
   ElbTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -361,7 +361,7 @@ Resources:
           cd /home/ubuntu/
           git clone https://github.com/nlpsandbox/date-annotator-example.git
           cd date-annotator-example
-          docker-compose up -d
+          docker-compose up -d --no-build
 
   DateAnnotatorExampleElbTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -472,7 +472,7 @@ Resources:
           cd /home/ubuntu/
           git clone https://github.com/nlpsandbox/date-annotator-stub.git
           cd date-annotator-stub
-          docker-compose up -d
+          docker-compose up -d --no-build
 
   DateAnnotatorStubElbTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -584,7 +584,7 @@ Resources:
           git clone https://github.com/nlpsandbox/phi-deidentifier-app.git
           cd phi-deidentifier-app
           cp .env.example .env
-          docker-compose up -d
+          docker-compose up -d --no-build
 
   PhiDeidentifierElbTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
