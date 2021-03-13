@@ -11,3 +11,5 @@ parameters:
   PublicSubnets: "subnet-02f2acd15e5be53cd,subnet-031359c53fce9b312,subnet-0f19d4c62f9ab0f2c"
   # Private Subnets
   PrivateSubnets: "subnet-025c297e427e44daf,subnet-0bb4c519a4cbffcca,subnet-0b8a92e98f330a943"
+stack_tags:
+  name: nlpsandbox
