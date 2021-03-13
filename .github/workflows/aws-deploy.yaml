@@ -41,7 +41,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.CI_SERVICE_USER_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::563295687221:role/NlpSandboxServiceAccount-ServiceRole-H1K0Q1UH2IX7
-          role-external-id: Example987
           role-duration-seconds: 1200
       - name: Deploy with sceptre
         run: |
