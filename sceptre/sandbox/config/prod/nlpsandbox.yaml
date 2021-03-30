@@ -2,7 +2,7 @@ template_path: nlpsandbox.yaml
 stack_name: nlpsandbox
 parameters:
   Department: "CompOnc"
-  Project: "genie"
+  Project: "nlpsandbox"
   OwnerEmail: "thomas.yu@sagebase.org"
   SSLCertificateIdArn: "arn:aws:acm:us-east-1:563295687221:certificate/07df27d5-a1fc-45f2-b70a-61ebda338153"
   #sandcastle vpc
