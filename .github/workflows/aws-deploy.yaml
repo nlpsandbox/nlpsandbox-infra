@@ -1,10 +1,6 @@
 name: aws-deploy
 
-on:
-  pull_request:
-    branches: '*'
-  push:
-    branches: [main, develop]
+on: push
 
 jobs:
   pre-commit:
@@ -18,24 +14,21 @@ jobs:
     name: Deploy CloudFormation templates using sceptre
     runs-on: ubuntu-latest
     needs: pre-commit
-    if: github.ref == 'refs/heads/prod'
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Assume AWS Role
+      - name: Assume AWS role
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.CI_SERVICE_USER_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.CI_SERVICE_USER_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::841415736403:user/nlp-sandbox-ci-service-account-ServiceUser-3SMWSUO0921J
---
-
-
-
           role-duration-seconds: 1200
-      - name: Deploy 'prod' templates
+      - name: Deploy templates
         uses: Sage-Bionetworks/sceptre-action@v1.1
         with:
           sceptre_version: 2.4.0
-          sceptre_subcommand: launch --yes prod
+          sceptre_directory: sceptre/nlpsandbox
+          sceptre_subcommand: launch --yes common
