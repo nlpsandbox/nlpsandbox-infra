@@ -5,7 +5,7 @@ stack_tags:
   Project: "Nlp Sandbox"
   OwnerEmail: "thomas.yu@sagebase.org"
 parameters:
-  VpcSubnetPrefix: "10.255.20"
+  VpcSubnetPrefix: "10.255.31"
   VpcName: nlpsandboxvpc
 hooks:
   before_launch:
