@@ -2,7 +2,7 @@ template_path: remote/vpc-mini.yaml
 stack_name: nlpsandboxvpc
 stack_tags:
   Department: "CompOnc"
-  Project: "Nlp Sandbox"
+  Project: "NLP Sandbox"
   OwnerEmail: "thomas.yu@sagebase.org"
 parameters:
   VpcSubnetPrefix: "10.255.21"
