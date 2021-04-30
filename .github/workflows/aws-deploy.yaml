@@ -12,30 +12,70 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - uses: pre-commit/action@v2.0.2
-
-  sceptre-deploy:
-    name: Deploy CloudFormation templates using sceptre
+      - uses: pre-commit/action@v2.0.0
+  sceptre-sandbox:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     needs: pre-commit
-    if: github.ref == 'refs/heads/prod'
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: Cache python modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install sceptre sceptre-ssm-resolver
       - name: Assume AWS Role
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.CI_SERVICE_USER_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.CI_SERVICE_USER_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-          role-to-assume: arn:aws:iam::841415736403:user/nlp-sandbox-ci-service-account-ServiceUser-3SMWSUO0921J
---
-
-
-
+          role-to-assume: arn:aws:iam::563295687221:role/NlpSandboxServiceAccount-ServiceRole-H1K0Q1UH2IX7
           role-duration-seconds: 1200
-      - name: Deploy 'prod' templates
-        uses: Sage-Bionetworks/sceptre-action@v1.1
-        with:
-          sceptre_version: 2.4.0
-          sceptre_subcommand: launch --yes prod
+      - name: Deploy with sceptre
+        run: |
+          cd sceptre/sandbox
+          sceptre launch prod --yes
+  # sceptre-scicomp:
+  #   if: github.event_name == 'push'
+  #   needs: org-formation
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Set up Python 3.8
+  #       uses: actions/setup-python@v1
+  #       with:
+  #         python-version: 3.8
+  #     - name: Cache python modules
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: ~/.cache/pip
+  #         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-pip-
+  #     - name: Install dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install sceptre sceptre-ssm-resolver
+  #     - name: Assume AWS Role
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.CI_SERVICE_USER_ACCESS_KEY }}
+  #         aws-secret-access-key: ${{ secrets.CI_SERVICE_USER_SECRET_ACCESS_KEY }}
+  #         aws-region: us-east-1
+  #         role-to-assume: arn:aws:iam::055273631518:role/OrganizationFormationBuildAccessRole
+  #         role-duration-seconds: 1200
+  #     - name: Deploy with sceptre
+  #       run: |
+  #         cd sceptre/scicomp
+  #         sceptre launch prod --yes
