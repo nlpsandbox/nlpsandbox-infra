@@ -28,7 +28,11 @@ jobs:
           aws-access-key-id: ${{ secrets.CI_SERVICE_USER_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.CI_SERVICE_USER_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-          role-to-assume: arn:aws:iam::563295687221:role/NlpSandboxServiceAccount-ServiceRole-H1K0Q1UH2IX7
+          role-to-assume: arn:aws:iam::841415736403:user/nlp-sandbox-ci-service-account-ServiceUser-3SMWSUO0921J
+--
+
+
+
           role-duration-seconds: 1200
       - name: Deploy 'prod' templates
         uses: Sage-Bionetworks/sceptre-action@v1.1
