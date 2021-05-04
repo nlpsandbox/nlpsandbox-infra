@@ -1,0 +1,12 @@
+template_path: remote/vpc-mini.yaml
+stack_name: nlpsandboxvpc
+stack_tags:
+  Department: "CompOnc"
+  Project: "NLP Sandbox"
+  OwnerEmail: "thomas.yu@sagebase.org"
+parameters:
+  VpcSubnetPrefix: "10.255.21"
+  VpcName: nlpsandboxvpc
+hooks:
+  before_launch:
+    - !cmd "wget {{stack_group_config.aws_infra_templates_root_url}}/v0.2.5/templates/VPC/vpc-mini.yaml -N -P templates/remote"
