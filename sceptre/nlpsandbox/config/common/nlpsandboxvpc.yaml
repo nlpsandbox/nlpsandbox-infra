@@ -9,4 +9,4 @@ parameters:
   VpcName: nlpsandboxvpc
 hooks:
   before_launch:
-    - !cmd "wget {{stack_group_config.aws_infra_templates_root_url}}/v0.2.4/templates/VPC/vpc-mini.yaml -N -P templates/remote"
+    - !cmd "wget {{stack_group_config.aws_infra_templates_root_url}}/v0.2.5/templates/VPC/vpc-mini.yaml -N -P templates/remote"
