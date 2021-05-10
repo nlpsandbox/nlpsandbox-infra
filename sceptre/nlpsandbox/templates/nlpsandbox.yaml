@@ -24,7 +24,7 @@ Parameters:
   KeyName:
     Description: ec2 Key
     Type: String
-    Default: tomnew
+    Default: nlpsandbox
   AppPort:
     Description: The port that the application runs on
     Type: Number
@@ -64,7 +64,7 @@ Resources:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
       GroupDescription: "Open a port for incoming traffic"
-      VpcId: !ImportValue 'us-east-1-sandcastlevpc-VPCId'
+      VpcId: !ImportValue 'us-east-1-nlpsandboxvpc-VPCId'
       SecurityGroupIngress:
         - CidrIp: "0.0.0.0/0"
           FromPort: 80
@@ -122,9 +122,9 @@ Resources:
       - DeleteOnTermination: true
         DeviceIndex: "0"
         GroupSet:
-        - !ImportValue 'us-east-1-sandcastlevpc-VpnSecurityGroup'
+        - !ImportValue 'us-east-1-nlpsandboxvpc-VpnSecurityGroup'
         - !GetAtt InstanceSecurityGroup.GroupId
-        SubnetId: !ImportValue 'us-east-1-sandcastlevpc-PrivateSubnet'
+        SubnetId: !ImportValue 'us-east-1-nlpsandboxvpc-PrivateSubnet'
       UserData:
         # install Docker and Docker-compose
         Fn::Base64: |
@@ -145,7 +145,7 @@ Resources:
   #   Properties:
   #     GroupName: "Nlp Sandbox Instances"
   #     GroupDescription: "Allow for NLP sandbox instances to communicate with each other"
-  #     VpcId: !ImportValue 'us-east-1-sandcastlevpc-VPCId'
+  #     VpcId: !ImportValue 'us-east-1-nlpsandboxvpc-VPCId'
   #     SecurityGroupIngress:
   #       - IpProtocol: -1
   #         FromPort: -1
@@ -161,7 +161,7 @@ Resources:
   #         - Ec2SecurityGroup
   #     GroupDescription: EC2 Security Group
   #     # VpcId: !Ref VpcId
-  #     VpcId: !ImportValue 'us-east-1-sandcastlevpc-VPCId'
+  #     VpcId: !ImportValue 'us-east-1-nlpsandboxvpc-VPCId'
   #     SecurityGroupIngress:
   #       - IpProtocol: tcp
   #         FromPort: !Ref AppPort
@@ -185,7 +185,7 @@ Resources:
           - ElbSecurityGroup
       GroupDescription: ELB Security Group
       # VpcId: !Ref VpcId
-      VpcId: !ImportValue 'us-east-1-sandcastlevpc-VPCId'
+      VpcId: !ImportValue 'us-east-1-nlpsandboxvpc-VPCId'
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 443
@@ -230,10 +230,10 @@ Resources:
       - DeleteOnTermination: true
         DeviceIndex: "0"
         GroupSet:
-        - !ImportValue 'us-east-1-sandcastlevpc-VpnSecurityGroup'
+        - !ImportValue 'us-east-1-nlpsandboxvpc-VpnSecurityGroup'
         - !GetAtt InstanceSecurityGroup.GroupId
         # - !GetAtt NlpSandboxSecurityGroup.GroupId
-        SubnetId: !ImportValue 'us-east-1-sandcastlevpc-PrivateSubnet'
+        SubnetId: !ImportValue 'us-east-1-nlpsandboxvpc-PrivateSubnet'
       UserData:
         # install Docker and Docker-compose
         Fn::Base64: |
@@ -260,7 +260,7 @@ Resources:
         - Id: !Ref DatanodeInstance
           Port: !Ref AppPort
       # VpcId: !Ref VpcId
-      VpcId: !ImportValue 'us-east-1-sandcastlevpc-VPCId'
+      VpcId: !ImportValue 'us-east-1-nlpsandboxvpc-VPCId'
       Port: !Ref AppPort
       Protocol: HTTP
       Tags:
@@ -342,10 +342,10 @@ Resources:
       - DeleteOnTermination: true
         DeviceIndex: "0"
         GroupSet:
-        - !ImportValue 'us-east-1-sandcastlevpc-VpnSecurityGroup'
+        - !ImportValue 'us-east-1-nlpsandboxvpc-VpnSecurityGroup'
         - !GetAtt InstanceSecurityGroup.GroupId
         # - !GetAtt NlpSandboxSecurityGroup.GroupId
-        SubnetId: !ImportValue 'us-east-1-sandcastlevpc-PrivateSubnet'
+        SubnetId: !ImportValue 'us-east-1-nlpsandboxvpc-PrivateSubnet'
       UserData:
         # install Docker and Docker-compose
         Fn::Base64: |
@@ -371,7 +371,7 @@ Resources:
         - Id: !Ref DateAnnotatorExampleInstance
           Port: !Ref AppPort
       # VpcId: !Ref VpcId
-      VpcId: !ImportValue 'us-east-1-sandcastlevpc-VPCId'
+      VpcId: !ImportValue 'us-east-1-nlpsandboxvpc-VPCId'
       Port: !Ref AppPort
       Protocol: HTTP
       Tags:
@@ -453,10 +453,10 @@ Resources:
       - DeleteOnTermination: true
         DeviceIndex: "0"
         GroupSet:
-        - !ImportValue 'us-east-1-sandcastlevpc-VpnSecurityGroup'
+        - !ImportValue 'us-east-1-nlpsandboxvpc-VpnSecurityGroup'
         - !GetAtt InstanceSecurityGroup.GroupId
         # - !GetAtt NlpSandboxSecurityGroup.GroupId
-        SubnetId: !ImportValue 'us-east-1-sandcastlevpc-PrivateSubnet'
+        SubnetId: !ImportValue 'us-east-1-nlpsandboxvpc-PrivateSubnet'
       UserData:
         # install Docker and Docker-compose
         Fn::Base64: |
@@ -482,7 +482,7 @@ Resources:
         - Id: !Ref DateAnnotatorStubInstance
           Port: !Ref AppPort
       # VpcId: !Ref VpcId
-      VpcId: !ImportValue 'us-east-1-sandcastlevpc-VPCId'
+      VpcId: !ImportValue 'us-east-1-nlpsandboxvpc-VPCId'
       Port: !Ref AppPort
       Protocol: HTTP
       Tags:
@@ -564,10 +564,10 @@ Resources:
       - DeleteOnTermination: true
         DeviceIndex: "0"
         GroupSet:
-        - !ImportValue 'us-east-1-sandcastlevpc-VpnSecurityGroup'
+        - !ImportValue 'us-east-1-nlpsandboxvpc-VpnSecurityGroup'
         - !GetAtt InstanceSecurityGroup.GroupId
         # - !GetAtt NlpSandboxSecurityGroup.GroupId
-        SubnetId: !ImportValue 'us-east-1-sandcastlevpc-PrivateSubnet'
+        SubnetId: !ImportValue 'us-east-1-nlpsandboxvpc-PrivateSubnet'
       UserData:
         # install Docker and Docker-compose
         Fn::Base64: |
@@ -594,7 +594,7 @@ Resources:
         - Id: !Ref PhiDeidentifierInstance
           Port: !Ref AppPort
       # VpcId: !Ref VpcId
-      VpcId: !ImportValue 'us-east-1-sandcastlevpc-VPCId'
+      VpcId: !ImportValue 'us-east-1-nlpsandboxvpc-VPCId'
       Port: !Ref AppPort
       Protocol: HTTP
       Tags:
@@ -676,9 +676,9 @@ Resources:
       - DeleteOnTermination: true
         DeviceIndex: "0"
         GroupSet:
-        - !ImportValue 'us-east-1-sandcastlevpc-VpnSecurityGroup'
+        - !ImportValue 'us-east-1-nlpsandboxvpc-VpnSecurityGroup'
         - !GetAtt InstanceSecurityGroup.GroupId
-        SubnetId: !ImportValue 'us-east-1-sandcastlevpc-PrivateSubnet'
+        SubnetId: !ImportValue 'us-east-1-nlpsandboxvpc-PrivateSubnet'
       UserData:
         # install Docker and Docker-compose
         Fn::Base64: |

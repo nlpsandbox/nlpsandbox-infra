@@ -8,8 +8,8 @@ parameters:
   #sandcastle vpc
   # VpcId: vpc-0e9b80dc470a797d5
   # Public Subnets
-  PublicSubnets: "subnet-02f2acd15e5be53cd,subnet-031359c53fce9b312,subnet-0f19d4c62f9ab0f2c"
+  PublicSubnets: "subnet-09f1e077fe301badb,subnet-059434604af2634b3,subnet-0b5ba0b019e542f9d"
   # Private Subnets
-  PrivateSubnets: "subnet-025c297e427e44daf,subnet-0bb4c519a4cbffcca,subnet-0b8a92e98f330a943"
+  PrivateSubnets: "subnet-09255b4a8811facd6,subnet-0c095587a2d3368f1,subnet-0478be9d949d43ed2"
 stack_tags:
   name: nlpsandbox
