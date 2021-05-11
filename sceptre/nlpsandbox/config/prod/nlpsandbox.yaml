@@ -1,0 +1,15 @@
+template_path: nlpsandbox.yaml
+stack_name: nlpsandbox
+parameters:
+  Department: "CompOnc"
+  Project: "nlpsandbox"
+  OwnerEmail: "thomas.yu@sagebase.org"
+  SSLCertificateIdArn: "arn:aws:acm:us-east-1:841415736403:certificate/876eec3f-6e6e-4739-b2d3-7886fd963ef8"
+  #sandcastle vpc
+  # VpcId: vpc-0e9b80dc470a797d5
+  # Public Subnets
+  PublicSubnets: "subnet-09f1e077fe301badb,subnet-059434604af2634b3,subnet-0b5ba0b019e542f9d"
+  # Private Subnets
+  PrivateSubnets: "subnet-09255b4a8811facd6,subnet-0c095587a2d3368f1,subnet-0478be9d949d43ed2"
+stack_tags:
+  name: nlpsandbox
