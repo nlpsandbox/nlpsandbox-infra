@@ -4,7 +4,7 @@ parameters:
   Department: "CompOnc"
   Project: "nlpsandbox"
   OwnerEmail: "thomas.yu@sagebase.org"
-  SSLCertificateIdArn: "arn:aws:acm:us-east-1:563295687221:certificate/07df27d5-a1fc-45f2-b70a-61ebda338153"
+  SSLCertificateIdArn: "arn:aws:acm:us-east-1:841415736403:certificate/876eec3f-6e6e-4739-b2d3-7886fd963ef8"
   #sandcastle vpc
   # VpcId: vpc-0e9b80dc470a797d5
   # Public Subnets
