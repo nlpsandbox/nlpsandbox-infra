@@ -1,0 +1,10 @@
+template_path: remote/peer-route-config.yaml
+stack_name: peer-nlpsandbox-vpc-admincentral
+parameters:
+  PeeringConnectionId: pcx-0d02daf67078f046e
+  VpcPrivateRouteTable: rtb-076a2da51f9b45fe3
+  VpcPublicRouteTable: rtb-0ad3e218e9fadd89c
+  VpnCidr: 10.1.0.0/16
+hooks:
+  before_launch:
+    - !cmd "curl https://{{stack_group_config.admincentral_cf_bucket}}.s3.amazonaws.com/aws-infra/master/peer-route-config.yaml --create-dirs -o templates/remote/peer-route-config.yaml"
