@@ -7,4 +7,4 @@ parameters:
   VpnCidr: 10.1.0.0/16
 hooks:
   before_launch:
-    - !cmd "wget {{stack_group_config.aws_infra_templates_root_url}}/v0.2.5/peer-route-config.yaml -N -P templates/remote"
+    - !cmd "wget https://raw.githubusercontent.com/Sage-Bionetworks/aws-infra/v0.2.5/templates/peer-route-config.yaml -N -P templates/remote"
