@@ -102,10 +102,10 @@ Resources:
       DisableApiTermination: False
       KeyName: !Ref KeyName
       BlockDeviceMappings:
-      - DeviceName: "/dev/xvda"
+      - DeviceName: "/dev/sda1"
         Ebs:
           DeleteOnTermination: true
-          VolumeSize: 100
+          VolumeSize: 300
           Encrypted: true
       Tags:
         # - Key: !Ref TagKey
@@ -210,7 +210,7 @@ Resources:
       DisableApiTermination: False
       KeyName: !Ref KeyName
       BlockDeviceMappings:
-      - DeviceName: "/dev/xvda"
+      - DeviceName: "/dev/sda1"
         Ebs:
           DeleteOnTermination: true
           VolumeSize: 300
@@ -322,10 +322,10 @@ Resources:
       DisableApiTermination: False
       KeyName: !Ref KeyName
       BlockDeviceMappings:
-      - DeviceName: "/dev/xvda"
+      - DeviceName: "/dev/sda1"
         Ebs:
           DeleteOnTermination: true
-          VolumeSize: 300
+          VolumeSize: 100
           Encrypted: true
       Tags:
         # - Key: !Ref TagKey
@@ -433,10 +433,10 @@ Resources:
       DisableApiTermination: False
       KeyName: !Ref KeyName
       BlockDeviceMappings:
-      - DeviceName: "/dev/xvda"
+      - DeviceName: "/dev/sda1"
         Ebs:
           DeleteOnTermination: true
-          VolumeSize: 300
+          VolumeSize: 100
           Encrypted: true
       Tags:
         # - Key: !Ref TagKey
@@ -544,10 +544,10 @@ Resources:
       DisableApiTermination: False
       KeyName: !Ref KeyName
       BlockDeviceMappings:
-      - DeviceName: "/dev/xvda"
+      - DeviceName: "/dev/sda1"
         Ebs:
           DeleteOnTermination: true
-          VolumeSize: 300
+          VolumeSize: 100
           Encrypted: true
       Tags:
         # - Key: !Ref TagKey
@@ -656,10 +656,10 @@ Resources:
       DisableApiTermination: False
       KeyName: !Ref KeyName
       BlockDeviceMappings:
-      - DeviceName: "/dev/xvda"
+      - DeviceName: "/dev/sda1"
         Ebs:
           DeleteOnTermination: true
-          VolumeSize: 100
+          VolumeSize: 300
           Encrypted: true
       Tags:
         # - Key: !Ref TagKey
