@@ -49,6 +49,23 @@ Resources:
               HttpRedirectCode: "307"
               Protocol: https
               ReplaceKeyWith: "nlpsandbox"
+  # CNAMEs is not supported by cloudformation
+  # TODO: Cloudfront resource has to be manually created.
+  # CloudFront:
+  #   Type: AWS::CloudFront::Distribution
+  #   Properties:
+  #     DistributionConfig:
+  #       CNAMEs:
+  #         - nlpsandbox.io
+  #         - www.nlpsandbox.io
+  #       Origins:
+  #         OriginPath: nlpsandbox.io.s3-website-us-east-1.amazonaws.com
+  #       ViewerCertificate:
+  #         AcmCertificateArn: arn:aws:acm:us-east-1:841415736403:certificate/f8b759e9-eba1-42ed-b382-1102ca9dac78
+  #         MinimumProtocolVersion: TLSv1.2_2018
+  #         SslSupportMethod: sni-only
+  #       IPV6Enabled: True
+  #       Enabled: True
 
 Outputs:
   WebsiteURL:
