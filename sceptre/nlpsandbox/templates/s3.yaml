@@ -1,0 +1,56 @@
+Parameters:
+  RootDomainName:
+    Description: Domain name for your website (example.com)
+    Type: String
+Resources:
+  RootBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref RootDomainName
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: True
+        BlockPublicPolicy: True
+        IgnorePublicAcls: True
+        RestrictPublicBuckets: True
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+        RoutingRules:
+          - RedirectRule:
+              HostName: "www.synapse.org"
+              HttpRedirectCode: "307"
+              Protocol: https
+              ReplaceKeyWith: "#!Synapse:syn22277123/wiki/608544"
+            RoutingRuleCondition:
+              KeyPrefixEquals: tools/date-annotator/leaderboard
+          - RedirectRule:
+              HostName: "www.synapse.org"
+              HttpRedirectCode: "307"
+              Protocol: https
+              ReplaceKeyWith: "#!Synapse:syn22277123/wiki/608545"
+            RoutingRuleCondition:
+              KeyPrefixEquals: tools/person-name-annotator/leaderboard
+          - RedirectRule:
+              HostName: "www.synapse.org"
+              HttpRedirectCode: "307"
+              Protocol: https
+              ReplaceKeyWith: "#!Synapse:syn22277123/wiki/608546"
+            RoutingRuleCondition:
+              KeyPrefixEquals: tools/physical-address-annotator/leaderboard
+          - RedirectRule:
+              HostName: "discord.gg"
+              HttpRedirectCode: "307"
+              Protocol: https
+              ReplaceKeyWith: "Zb4ymtF"
+            RoutingRuleCondition:
+              KeyPrefixEquals: discord
+          - RedirectRule:
+              HostName: "www.synapse.org"
+              HttpRedirectCode: "307"
+              Protocol: https
+              ReplaceKeyWith: "nlpsandbox"
+
+Outputs:
+  WebsiteURL:
+    Value: !GetAtt RootBucket.WebsiteURL
+    Description: URL for website hosted on S3

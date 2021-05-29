@@ -1,0 +1,6 @@
+template_path: s3.yaml
+stack_name: nlpsandbox-s3-website
+parameters:
+  RootDomainName: "nlpsandbox.io"
+stack_tags:
+  name: nlpsandbox
