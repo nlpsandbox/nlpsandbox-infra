@@ -50,7 +50,7 @@ Resources:
               Protocol: https
               ReplaceKeyWith: "nlpsandbox"
   # CNAMEs is not supported by cloudformation
-  # Cloudfront has to be manually created.
+  # TODO: Cloudfront resource has to be manually created.
   # CloudFront:
   #   Type: AWS::CloudFront::Distribution
   #   Properties:
