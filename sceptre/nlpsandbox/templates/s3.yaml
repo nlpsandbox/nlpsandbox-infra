@@ -49,6 +49,13 @@ Resources:
               HttpRedirectCode: "307"
               Protocol: https
               ReplaceKeyWith: "nlpsandbox"
+          - RedirectRule:
+              HostName: "docs.google.com"
+              HttpRedirectCode: "307"
+              Protocol: https
+              ReplaceKeyWith: "document/d/15nqxWUqU9pYU4NBuoJaCENBPpIHmjOhW-jhr3UOvHp0/edit?usp=sharing"
+            RoutingRuleCondition:
+              KeyPrefixEquals: minutes/platform
   # CNAMEs is not supported by cloudformation
   # TODO: Cloudfront resource has to be manually created.
   # CloudFront:
