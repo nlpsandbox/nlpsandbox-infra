@@ -45,17 +45,18 @@ Resources:
             RoutingRuleCondition:
               KeyPrefixEquals: discord
           - RedirectRule:
-              HostName: "www.synapse.org"
-              HttpRedirectCode: "307"
-              Protocol: https
-              ReplaceKeyWith: "nlpsandbox"
-          - RedirectRule:
               HostName: "docs.google.com"
               HttpRedirectCode: "307"
               Protocol: https
               ReplaceKeyWith: "document/d/15nqxWUqU9pYU4NBuoJaCENBPpIHmjOhW-jhr3UOvHp0/edit?usp=sharing"
             RoutingRuleCondition:
               KeyPrefixEquals: minutes/platform
+          - RedirectRule:
+              HostName: "www.synapse.org"
+              HttpRedirectCode: "307"
+              Protocol: https
+              ReplaceKeyWith: "nlpsandbox"
+
   # CNAMEs is not supported by cloudformation
   # TODO: Cloudfront resource has to be manually created.
   # CloudFront:
