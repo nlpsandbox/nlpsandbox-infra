@@ -51,6 +51,17 @@
           "swap_used_percent"
         ],
         "metrics_collection_interval": 60
+      },
+      "ethtool": {
+        "metrics_include": [
+          "rx_packets",
+          "tx_packets",
+          "bw_in_allowance_exceeded",
+          "bw_out_allowance_exceeded",
+          "conntrack_allowance_exceeded",
+          "linklocal_allowance_exceeded",
+          "pps_allowance_exceeded"
+        ]
       }
     }
   }
