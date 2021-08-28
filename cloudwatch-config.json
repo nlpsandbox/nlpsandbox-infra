@@ -77,7 +77,13 @@
         "collect_list": [
           {
             "file_path": "/opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log",
-            "log_group_name": "amazon-cloudwatch-agent.log"
+            "log_group_name": "amazon-cloudwatch-agent.log",
+            "log_stream_name":"controller"
+          },
+          {
+            "file_path": "/var/log/syslog",
+            "log_group_name": "/var/log/syslog",
+            "log_stream_name":"controller"
           }
         ]
       }
