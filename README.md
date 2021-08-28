@@ -61,4 +61,40 @@ To stop the agent:
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a stop
 ```
 
+
+## Push logs to CloudWatch
+
+
+```
+aws logs put-metric-filter \
+  --log-group-name /nlp-sandbox/controller.log \
+  --filter-name NlpSandboxControllerPingCount \
+  --filter-pattern 'checking progress or starting new job' \
+  --metric-transformations \
+      metricName=PlopCount,metricNamespace=NlpSandboxNamespace,metricValue=1,defaultValue=0
+```
+
+
+```
+aws logs create-log-stream \
+  --log-group-name /nlp-sandbox/controller.log \
+  --log-stream-name test
+```
+
+
+```
+aws logs put-log-events \
+  --log-group-name /nlp-sandbox/controller.log \
+  --log-stream-name test \
+  --log-events \
+    timestamp=1630159633000,message="This message contains an Error" \
+    timestamp=1630159633000,message="checking progress or starting new job"
+```
+
+```
+sudo usermod -a -G adm ubuntu
+```
+
+"log_stream_name":"controller-container"
+
 [Download the CloudWatch agent for Ubuntu (x86-64)]: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/download-cloudwatch-agent-commandline.html
