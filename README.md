@@ -93,8 +93,16 @@ aws logs put-log-events \
 
 ```
 sudo usermod -a -G adm ubuntu
+sudo usermod -a -G adm cwagent
 ```
 
-"log_stream_name":"controller-container"
+Print message to syslog:
+
+```
+echo -e "This is a test message" | tee >(exec logger)
+```
+
+
+
 
 [Download the CloudWatch agent for Ubuntu (x86-64)]: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/download-cloudwatch-agent-commandline.html
