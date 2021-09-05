@@ -1,23 +1,21 @@
-# aws-cloudformation
-AWS CloudFormation template for deploying the NLP Sandbox benchmarking infrastructure
+# NLP Sandbox CloudFormation template
 
+AWS CloudFormation template for deploying the NLP Sandbox benchmarking infrastructure
 
 ## Pre-commit
 
-```
+```console
 # Install pre-commit
 pre-commit install
 # Run pre-commit
 pre-commit run --all-files
 ```
 
-
 ## S3 static website / redirections
 
 While most of the S3 configuration is included in sceptre/nlpsandbox/templates/s3.yaml, but the resource that needs to be configured manually is the cloudfront distribution.  Follow these [AWS instructions](https://aws.amazon.com/premiumsupport/knowledge-center/cloudfront-https-requests-s3/) to serve HTTPS requests for your S3 bucket.
 
 - When updating redirections on the S3 bucket, you may have to clear the cloudfront cache.  Follow [this stackoverflow solution](https://stackoverflow.com/questions/22021651/amazon-s3-and-cloudfront-cache-how-to-clear-cache-or-synchronize-their-cache/63238713#63238713).
-
 
 ## Install and run the CloudWatch agent manually
 
@@ -27,82 +25,143 @@ instances to collect metrics such as CPU, memory, disk and network usage.
 1. Ssh into the EC2 instance.
 2. [Download the CloudWatch agent for Ubuntu (x86-64)].
 
-    ```
+    ```console
     wget https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
     ```
 
 3. Install the agent.
 
-    ```
+    ```console
     sudo dpkg -i -E ./amazon-cloudwatch-agent.deb
     ```
 
 4. Download the CloudWatch agent configuration.
 
-    ```
+    ```console
     wget https://github.com/nlpsandbox/nlpsandbox-infra/blob/main/cloudwatch-config.json
     ```
 
 5. Start the CloudWatch agent.
 
-    ```
+    ```console
     sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:cloudwatch-config.json -s
     ```
 
 6. Check the start of the CloudWatch agent.
 
-    ```
+    ```console
     sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a status
     ```
 
 To stop the agent:
 
-```
+```console
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a stop
 ```
 
-
 ## Push logs to CloudWatch
 
+### Requirements
 
-```
-aws logs put-metric-filter \
-  --log-group-name /nlp-sandbox/controller.log \
-  --filter-name NlpSandboxControllerPingCount \
-  --filter-pattern 'checking progress or starting new job' \
-  --metric-transformations \
-      metricName=PlopCount,metricNamespace=NlpSandboxNamespace,metricValue=1,defaultValue=0
+- [Configure your IAM role or user for CloudWatch Logs]
+
+### Create the log group and log stream
+
+Create a log group named `/var/log/syslog` that will gather logs from the file
+with the same name.
+
+```console
+aws logs create-log-group --log-group-name /var/log/syslog
 ```
 
+Create a log stream per file or type of log files and add it to an existing log
+group. Here we name the stream following the name of the instance
+(`controller`).
 
-```
+```console
 aws logs create-log-stream \
-  --log-group-name /nlp-sandbox/controller.log \
-  --log-stream-name test
+  --log-group-name /var/log/syslog \
+  --log-stream-name controller
 ```
 
+Send messages to a log stream for testing. These messages should then be visible
+in `AWS Console` > `CloudWatch` > `Log groups`.
 
-```
+```console
 aws logs put-log-events \
-  --log-group-name /nlp-sandbox/controller.log \
-  --log-stream-name test \
+  --log-group-name /var/log/syslog \
+  --log-stream-name controller \
   --log-events \
     timestamp=1630159633000,message="This message contains an Error" \
     timestamp=1630159633000,message="checking progress or starting new job"
 ```
 
+Another way of testing that syslog message reach AWS is by printing a message to
+syslog.
+
+```console
+echo -e "This is a test message captured by syslog" | tee >(exec logger)
 ```
-sudo usermod -a -G adm ubuntu
+
+### Create a metric filter
+
+Create a log filter that listen to the log group `/var/log/syslog`.
+
+```console
+aws logs put-metric-filter \
+  --log-group-name /var/log/syslog \
+  --filter-name ErrorCount \
+  --filter-pattern 'Error' \
+  --metric-transformations \
+      metricName=Count,metricNamespace=MyNamespace,metricValue=1,defaultValue=0
+```
+
+The pattern value is case sensitive. Also, the error priority defined by the
+syslog file is "err".
+
+```console
+aws logs put-metric-filter \
+  --log-group-name /var/log/syslog \
+  --filter-name errCount \
+  --filter-pattern 'err' \
+  --metric-transformations \
+      metricName=Count,metricNamespace=MyNamespace,metricValue=1,defaultValue=0
+```
+
+### Push log files to CloudWatch
+
+In order to read the content of `/var/syslog` to CW, add the user `cwagent` that
+runs the agent to the group `adm`.
+
+```console
 sudo usermod -a -G adm cwagent
 ```
 
-Print message to syslog:
+List in the section "logs" of the configuration file of the CW agent the files
+whose content need to be pushed to CW.
 
+```json
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log",
+            "log_group_name": "amazon-cloudwatch-agent.log",
+            "log_stream_name":"controller"
+          },
+          {
+            "file_path": "/var/log/syslog",
+            "log_group_name": "/var/log/syslog",
+            "log_stream_name":"controller"
+          }
+        ]
+      }
+    }
+  }
 ```
-echo -e "This is a test message" | tee >(exec logger)
-```
 
-
-
+<!-- Links -->
 
 [Download the CloudWatch agent for Ubuntu (x86-64)]: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/download-cloudwatch-agent-commandline.html
+[Configure your IAM role or user for CloudWatch Logs]: https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/QuickStartEC2Instance.html
