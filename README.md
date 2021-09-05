@@ -59,13 +59,13 @@ To stop the agent:
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a stop
 ```
 
-## Push logs to CloudWatch
+## Pushing logs to CloudWatch
 
 ### Requirements
 
 - [Configure your IAM role or user for CloudWatch Logs]
 
-### Create the log group and log stream
+### Creating the log group and log stream
 
 Create a log group named `/var/log/syslog` that will gather logs from the file
 with the same name.
@@ -103,7 +103,7 @@ syslog.
 echo -e "This is a test message captured by syslog" | tee >(exec logger)
 ```
 
-### Create a metric filter
+### Creating a metric filter
 
 Create a log filter that listen to the log group `/var/log/syslog`.
 
@@ -128,7 +128,7 @@ aws logs put-metric-filter \
       metricName=Count,metricNamespace=MyNamespace,metricValue=1,defaultValue=0
 ```
 
-### Push log files to CloudWatch
+### Pushing log files to CloudWatch
 
 In order to read the content of `/var/syslog` to CW, add the user `cwagent` that
 runs the agent to the group `adm`.
@@ -159,6 +159,32 @@ whose content need to be pushed to CW.
       }
     }
   }
+```
+
+### Pushing container logs
+
+Create the log group:
+
+```console
+aws logs create-log-group --log-group-name docker-logs
+```
+
+Create the log stream:
+
+```console
+aws logs create-log-stream \
+  --log-group-name docker-logs \
+  --log-stream-name controller
+```
+
+Start a container with the log driver `awslogs`:
+
+```console
+docker run --rm \
+  --log-driver=awslogs \
+  --log-opt awslogs-group=docker-logs \
+  --log-opt awslogs-stream=controller \
+  alpine echo 'Test message'
 ```
 
 <!-- Links -->
