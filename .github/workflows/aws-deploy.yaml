@@ -30,11 +30,9 @@ jobs:
         uses: Sceptre/github-ci-action@v2.1.0
         with:
           sceptre_version: 2.4.0
-          sceptre_directory: ./
           sceptre_subcommand: launch --yes common
       - name: Deploy prod configuration
         uses: Sceptre/github-ci-action@v2.1.0
         with:
           sceptre_version: 2.4.0
-          sceptre_directory: ./
           sceptre_subcommand: launch --yes prod
