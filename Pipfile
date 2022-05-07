@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[requires]
+python_version = "3.8"
+
+[dev-packages]
+pre-commit = "==2.*"
+sceptre = ">=2.7.1"
+
+[packages]
+boto3 = "==1.*"
